@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Máy Tính Premium 😏</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #1e1e2f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Calculator */
+.calculator {
+    background: #2c2c3e;
+    padding: 15px;
+    border-radius: 15px;
+    width: 320px;
+    max-width: 90%;
+}
+
+.display {
+    width: 100%;
+    height: 60px;
+    font-size: 24px;
+    text-align: right;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 10px;
+    background: black;
+    color: #0f0;
+}
+
+/* Buttons */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: #444;
+    color: white;
+}
+
+.operator { background: #ff9500; }
+.equal { background: #28a745; grid-column: span 2; }
+.clear { background: #dc3545; }
+
+/* Popup */
+.popup {
+    position: fixed;
+    top:0;left:0;right:0;bottom:0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Box chọn gói */
+.plan-box {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 300px;
+    text-align: center;
+}
+
+.plan {
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 3 màu */
+.week { background: #4caf50; color: white; }
+.month { background: #2196f3; color: white; }
+.year { background: #ff9800; color: white; }
+
+/* Layout sau khi chọn */
+.result-box {
+    display: none;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    width: 300px;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .display { font-size: 20px; height: 50px; }
+    button { padding: 12px; font-size: 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+    <input id="display" class="display" disabled>
+
+    <div class="buttons">
+        <button onclick="clearDisplay()" class="clear">C</button>
+        <button onclick="appendValue('/')">÷</button>
+        <button onclick="appendValue('*')">×</button>
+        <button onclick="appendValue('-')">−</button>
+
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="appendValue('+')" class="operator">+</button>
+
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="calculate()" class="equal">=</button>
+    </div>
+</div>
+
+<!-- Popup -->
+<div id="popup" class="popup">
+
+    <!-- Chọn gói -->
+    <div class="plan-box" id="planBox">
+        <h2>🚫 Bị khóa 😏</h2>
+        <p>Chọn gói để dùng "="</p>
+
+        <div class="plan week" onclick="selectPlan('week')">1 Tuần - 10k</div>
+        <div class="plan month" onclick="selectPlan('month')">1 Tháng - 30k</div>
+        <div class="plan year" onclick="selectPlan('year')">1 Năm - 199k</div>
+
+        <button onclick="closePopup()">Đóng</button>
+    </div>
+
+    <!-- 3 layout -->
+    <div id="weekLayout" class="result-box">
+        <h2>Gói 1 Tuần</h2>
+        <p>😆 Người tiết kiệm</p>
+        <button onclick="back()">Quay lại</button>
+    </div>
+
+    <div id="monthLayout" class="result-box">
+        <h2>Gói 1 Tháng</h2>
+        <p>😎 Người dùng thường</p>
+        <button onclick="back()">Quay lại</button>
+    </div>
+
+    <div id="yearLayout" class="result-box">
+        <h2>Gói 1 Năm</h2>
+        <p>💰 Đại gia xuất hiện</p>
+        <button onclick="back()">Quay lại</button>
+    </div>
+
+</div>
+
+<script>
+let display = document.getElementById("display");
+
+function appendValue(v){
+    display.value += v;
+}
+
+function clearDisplay(){
+    display.value = "";
+}
+
+// 😈 bấm = mở popup
+function calculate(){
+    document.getElementById("popup").style.display = "flex";
+}
+
+// đóng popup
+function closePopup(){
+    document.getElementById("popup").style.display = "none";
+}
+
+// chọn gói
+function selectPlan(type){
+    document.getElementById("planBox").style.display = "none";
+
+    document.getElementById("weekLayout").style.display = "none";
+    document.getElementById("monthLayout").style.display = "none";
+    document.getElementById("yearLayout").style.display = "none";
+
+    document.getElementById(type + "Layout").style.display = "block";
+}
+
+// quay lại
+function back(){
+    document.getElementById("planBox").style.display = "block";
+
+    document.getElementById("weekLayout").style.display = "none";
+    document.getElementById("monthLayout").style.display = "none";
+    document.getElementById("yearLayout").style.display = "none";
+}
+</script>
+
+</body>
+</html>
